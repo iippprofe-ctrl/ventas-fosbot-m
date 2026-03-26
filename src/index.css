@@ -231,6 +231,43 @@ a:hover {
 .badge-blue { background: rgba(30, 131, 252, 0.1); color: var(--primary-color); border: 1px solid rgba(30, 131, 252, 0.2); }
 .badge-green { background: rgba(140, 225, 89, 0.1); color: var(--secondary-color); border: 1px solid rgba(140, 225, 89, 0.2); }
 
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  nav {
+    margin: 10px 0.5rem !important;
+    padding: 0.75rem 1rem !important;
+    gap: 0.5rem;
+  }
+  
+  .text-2xl {
+    font-size: 1.1rem !important;
+  }
+  
+  nav img {
+    height: 35px !important;
+  }
+
+  .grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  .glass-panel {
+    padding: 1rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .btn {
+    padding: 0.4rem 0.8rem !important;
+    font-size: 0.75rem !important;
+  }
+  
+  .font-bold.text-2xl {
+    display: none; /* Hide store name text on very small screens to fit logo and buttons */
+  }
+}
+
 /* Animation */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }

@@ -14,10 +14,10 @@ export default function Navbar() {
       display: 'flex', justifyContent: 'space-between', alignItems: 'center'
     }}>
       <div className="d-flex align-center gap-3">
-        <Link to="/" className="d-flex align-center gap-3" style={{ color: 'var(--text-main)' }}>
-          <img src="/logo.png" alt="FISBOT MAKER Logo" style={{ height: '55px', objectFit: 'contain' }} />
+        <Link to="/" className="d-flex align-center gap-1" style={{ color: 'var(--text-main)' }}>
+          <img src="logo.png" alt="Logo" style={{ height: '55px', objectFit: 'contain' }} />
           <span className="font-bold text-2xl" style={{ fontFamily: 'var(--font-display)', letterSpacing: '1px', color: 'var(--primary-color)' }}>
-            FISBOT - MAKER
+            FISBOT
           </span>
         </Link>
       </div>
