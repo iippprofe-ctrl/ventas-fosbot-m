@@ -1,5 +1,5 @@
-// Configuración de la API (desde .env)
-const API_URL = import.meta.env.VITE_API_URL || '';
+// Configuración de la API
+const API_URL = import.meta.env.VITE_API_URL || 'https://script.google.com/macros/s/AKfycbw9hsnnInJgV8adCLvfhfRX3tEvaiYBOEUYq_xu58YfA-MbdYTLPk7UXcvYcQqx3Bbk/exec';
 const API_TOKEN = import.meta.env.VITE_API_TOKEN || 'FISBOT_SECURITY_TOKEN_123';
 
 const INITIAL_PRODUCTS = [
