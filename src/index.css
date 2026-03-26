@@ -268,8 +268,40 @@ a:hover {
   }
 }
 
-/* Animation */
-@keyframes fadeIn {
+.pos-container {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+}
+
+.pos-catalog, .pos-cart {
+  width: 100%;
+  height: auto;
+}
+
+@media (min-width: 768px) {
+  .pos-container {
+    flex-direction: row;
+    height: 85vh;
+  }
+  .pos-catalog {
+    width: 60%;
+    height: 100%;
+  }
+  .pos-cart {
+    width: 40%;
+    height: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  .pos-catalog {
+    height: 60vh;
+  }
+  .pos-container {
+    padding-bottom: 2rem;
+  }
+}
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }

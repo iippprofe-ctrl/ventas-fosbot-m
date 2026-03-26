@@ -96,9 +96,9 @@ export default function PointOfSale() {
   }
 
   return (
-    <div className="d-flex flex-col md-flex-row gap-6 h-full" style={{ display: 'flex', flexDirection: window.innerWidth < 768 ? 'column' : 'row' }}>
+    <div className="pos-container gap-6">
       {/* Product List */}
-      <div className="glass-panel d-flex flex-col" style={{ padding: '1.5rem', height: '80vh', display: 'flex', flexDirection: 'column' }}>
+      <div className="glass-panel pos-catalog">
         <h3 className="font-bold text-lg mb-4 text-primary">Catálogo</h3>
         
         <div className="mb-4 position-relative d-flex align-center" style={{ position: 'relative' }}>
