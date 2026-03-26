@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
+import { HashRouter } from 'react-router-dom'
 import App from './App.jsx'
 import './index.css'
 import { AuthProvider } from './contexts/AuthContext'
@@ -18,13 +18,13 @@ initStore()
     
     ReactDOM.createRoot(rootElement).render(
       <React.StrictMode>
-        <BrowserRouter>
+        <HashRouter>
           <AuthProvider>
             <CartProvider>
               <App />
             </CartProvider>
           </AuthProvider>
-        </BrowserRouter>
+        </HashRouter>
       </React.StrictMode>,
     );
   })
