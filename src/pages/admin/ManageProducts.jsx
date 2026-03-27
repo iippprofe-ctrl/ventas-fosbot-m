@@ -18,18 +18,30 @@ export default function ManageProducts() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log('FISBOT_MANAGER: Guardando producto...', formData.name);
 
-    const payload = {
-      ...formData,
-      id: editingId || Date.now().toString(),
-      price: parseFloat(formData.price || 0),
-      wholesalePrice: parseFloat(formData.wholesalePrice || 0),
-      stock: parseInt(formData.stock || 0)
-    };
-    
-    saveProduct(payload);
-    loadProducts();
-    closeModal();
+    if (!formData.name.trim()) {
+      alert('El nombre del producto es obligatorio');
+      return;
+    }
+
+    try {
+      const payload = {
+        ...formData,
+        id: editingId || Date.now().toString(),
+        price: Number(formData.price) || 0,
+        wholesalePrice: Number(formData.wholesalePrice) || 0,
+        stock: Number(formData.stock) || 0
+      };
+      
+      saveProduct(payload);
+      console.log('FISBOT_MANAGER: Producto guardado localmente.');
+      loadProducts();
+      closeModal();
+    } catch(err) {
+      console.error('FISBOT_MANAGER_ERROR:', err);
+      alert('Error al guardar el producto: ' + err.message);
+    }
   };
 
   const openForm = (product = null) => {

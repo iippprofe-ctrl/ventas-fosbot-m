@@ -83,21 +83,21 @@ export const initStore = async () => {
         if (cloudDb.productos) {
             const parsed = cloudDb.productos.map(p => ({
                 ...p,
-                price: parseFloat(p.price || 0),
-                wholesalePrice: parseFloat(p.wholesalePrice || 0),
-                stock: parseInt(p.stock || 0)
+                price: Number(p.price) || 0,
+                wholesalePrice: Number(p.wholesalePrice) || 0,
+                stock: Number(p.stock) || 0
             }));
             localStorage.setItem('fisbot_products', JSON.stringify(parsed));
         }
         if (cloudDb.ventas) {
             const parsed = cloudDb.ventas.map(v => ({
                 ...v,
-                total: parseFloat(v.total || 0),
+                total: Number(v.total) || 0,
                 items: Array.isArray(v.items) ? v.items.map(it => ({
                     ...it,
-                    price: parseFloat(it.price || 0),
-                    wholesalePrice: parseFloat(it.wholesalePrice || 0),
-                    quantity: parseInt(it.quantity || 0)
+                    price: Number(it.price) || 0,
+                    wholesalePrice: Number(it.wholesalePrice) || 0,
+                    quantity: Number(it.quantity) || 0
                 })) : []
             }));
             localStorage.setItem('fisbot_sales', JSON.stringify(parsed));
