@@ -295,11 +295,31 @@ a:hover {
 }
 
 @media (max-width: 767px) {
-  .pos-catalog {
-    height: 60vh;
-  }
   .pos-container {
-    padding-bottom: 2rem;
+    flex-direction: column !important;
+    height: auto !important;
+    gap: 1.5rem !important;
+    padding: 0.5rem !important;
+  }
+  
+  .pos-catalog {
+    height: 45vh !important; /* Fixed height for product list to avoid overlapping */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .pos-catalog .d-flex.flex-col {
+    overflow-y: auto !important;
+    max-height: 100%;
+  }
+
+  .pos-cart {
+    height: auto !important;
+    min-height: 40vh;
+  }
+
+  .pos-container .glass-panel {
+    width: 100% !important;
   }
 }
 @keyframes fadeIn {

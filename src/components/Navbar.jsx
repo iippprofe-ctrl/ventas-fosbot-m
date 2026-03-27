@@ -19,7 +19,7 @@ export default function Navbar() {
         <Link to="/" className="d-flex align-center gap-1" style={{ color: 'var(--text-main)' }}>
           <img src="logo.png" alt="Logo" style={{ height: '55px', objectFit: 'contain' }} />
           <span className="font-bold text-2xl" style={{ fontFamily: 'var(--font-display)', letterSpacing: '1px', color: 'var(--primary-color)' }}>
-            FISBOT
+            FISBOT MAKER
           </span>
         </Link>
       </div>
