@@ -150,53 +150,53 @@ export default function DashboardOverview() {
             <h3 className="text-xl font-bold">Configuración Maestra (MASTER)</h3>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             <div className="d-flex flex-col gap-6">
               <div className="grid grid-cols-1 gap-4">
-                <div>
+                <div className="w-100">
                   <label className="text-sm font-bold text-muted d-flex align-center gap-2 mb-2">
                     <Smartphone size={16} /> WhatsApp de Ventas y Contacto (Único)
                   </label>
-                  <input className="input-base" value={whatsapp} onChange={e => setWhatsapp(e.target.value)} placeholder="591..." />
+                  <input className="input-base w-100" value={whatsapp} onChange={e => setWhatsapp(e.target.value)} placeholder="591..." />
                 </div>
               </div>
 
-              <div>
+              <div className="w-100">
                 <label className="text-sm font-bold text-muted d-flex align-center gap-2 mb-2">
                   <MapPin size={16} /> Link Ubicación (Google Maps)
                 </label>
-                <input className="input-base" value={location} onChange={e => setLocation(e.target.value)} placeholder="https://goo.gl/maps/..." />
+                <input className="input-base w-100" value={location} onChange={e => setLocation(e.target.value)} placeholder="https://goo.gl/maps/..." />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div>
+                <div className="w-100">
                   <label className="text-sm font-bold text-muted d-flex align-center gap-2 mb-2">
-                    <Hash size={16} /> Categorías de Productos
+                    <Hash size={16} /> Categorías
                   </label>
                   <div className="d-flex gap-2">
-                    <input className="input-base" value={newCategory} onChange={e => setNewCategory(e.target.value)} placeholder="Ej. Sensores" />
-                    <button className="btn btn-secondary" onClick={handleAddCategory}>+</button>
+                    <input className="input-base" style={{ flex: 1 }} value={newCategory} onChange={e => setNewCategory(e.target.value)} placeholder="Ej. Sensores" />
+                    <button className="btn btn-secondary" style={{ padding: '0.5rem 1rem' }} onClick={handleAddCategory}>+</button>
                   </div>
                   <div className="d-flex gap-2 flex-wrap mt-3">
                     {categoryList.map(c => (
-                      <span key={c} className="badge badge-green d-flex align-center gap-2">
+                      <span key={c} className="badge badge-green d-flex align-center gap-2" style={{ fontSize: '0.7rem' }}>
                         {c} <RefreshCcw size={10} style={{ cursor: 'pointer' }} onClick={() => handleRemoveCategory(c)} />
                       </span>
                     ))}
                   </div>
                 </div>
 
-                <div>
+                <div className="w-100">
                   <label className="text-sm font-bold text-muted d-flex align-center gap-2 mb-2">
-                    <Package size={16} /> Lista de Proveedores
+                    <Package size={16} /> Proveedores
                   </label>
                   <div className="d-flex gap-2">
-                    <input className="input-base" value={newProvider} onChange={e => setNewProvider(e.target.value)} placeholder="Ej. P1" />
-                    <button className="btn btn-secondary" onClick={handleAddProvider}>+</button>
+                    <input className="input-base" style={{ flex: 1 }} value={newProvider} onChange={e => setNewProvider(e.target.value)} placeholder="Ej. P1" />
+                    <button className="btn btn-secondary" style={{ padding: '0.5rem 1rem' }} onClick={handleAddProvider}>+</button>
                   </div>
                   <div className="d-flex gap-2 flex-wrap mt-3">
                     {providerList.map(p => (
-                      <span key={p} className="badge badge-blue d-flex align-center gap-2">
+                      <span key={p} className="badge badge-blue d-flex align-center gap-2" style={{ fontSize: '0.7rem' }}>
                         {p} <RefreshCcw size={10} style={{ cursor: 'pointer' }} onClick={() => handleRemoveProvider(p)} />
                       </span>
                     ))}
@@ -204,15 +204,15 @@ export default function DashboardOverview() {
                 </div>
               </div>
 
-              <button className="btn btn-primary" style={{ width: '100%', padding: '1rem' }} onClick={handleSaveSettings}>
-                <Settings size={20} /> GUARDAR CONFIGURACIÓN EN LA NUBE
+              <button className="btn btn-primary" style={{ width: '100%', padding: '1rem', marginTop: '1rem' }} onClick={handleSaveSettings}>
+                <Settings size={20} /> GUARDAR CONFIGURACIÓN
               </button>
 
-              <div className="mt-4 pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+              <div className="mt-6 pt-6" style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
                 <label className="text-sm font-bold text-secondary d-flex align-center gap-2 mb-3">
-                  <Users size={16} /> Cambio de Usuario/Contraseña MASTER
+                  <Users size={16} /> Credenciales MASTER
                 </label>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <span className="text-xs text-muted">Usuario Maestro</span>
                     <input className="input-base mt-1" value={masterUser} onChange={e => setMasterUser(e.target.value)} />
@@ -229,17 +229,17 @@ export default function DashboardOverview() {
               <label className="text-sm font-bold text-danger d-flex align-center gap-2">
                 <RefreshCcw size={16} /> Zona de Peligro
               </label>
-              <button className="btn btn-danger" onClick={handleResetSales}>
-                Reiniciar Historial de Ventas
+              <button className="btn btn-danger" style={{ width: '100%' }} onClick={handleResetSales}>
+                Reiniciar Historial
               </button>
-              <p className="text-xs text-muted italic">Esta acción borrará todas las ventas registradas.</p>
+              <p className="text-xs text-muted italic">Esta acción borrará todas las ventas registradas permanently.</p>
             </div>
           </div>
         </div>
       )}
 
-      <h3 className="text-xl font-bold mb-4">Últimas Ventas (Historial)</h3>
-      <div className="glass-panel" style={{ overflowX: 'auto', padding: '1rem' }}>
+      <h3 className="text-xl font-bold mb-4">Últimas Ventas</h3>
+      <div className="glass-panel dashboard-table-container" style={{ overflowX: 'auto', padding: '1rem', minHeight: '200px' }}>
         <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse' }}>
           <thead>
             <tr style={{ borderBottom: '1px solid var(--surface-border)' }}>
