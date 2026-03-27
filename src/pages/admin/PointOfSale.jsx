@@ -22,12 +22,27 @@ export default function PointOfSale() {
     setCart(prev => {
       const existing = prev.find(item => item.id === product.id);
       if (existing) {
-        if (existing.quantity >= product.stock) return prev; // check stock limits
+        if (existing.quantity >= product.stock) return prev; 
         return prev.map(item => item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item);
       }
       if (product.stock <= 0) return prev;
-      return [...prev, { ...product, quantity: 1 }];
+      // Por defecto agregar precio normal
+      return [...prev, { ...product, quantity: 1, activePrice: product.price, priceType: 'normal' }];
     });
+  };
+
+  const togglePrice = (productId) => {
+    setCart(prev => prev.map(item => {
+      if (item.id === productId) {
+        const isWholesale = item.priceType === 'wholesale';
+        return { 
+          ...item, 
+          priceType: isWholesale ? 'normal' : 'wholesale',
+          activePrice: isWholesale ? item.price : item.wholesalePrice
+        };
+      }
+      return item;
+    }));
   };
 
   const updateQuantity = (productId, qty) => {
@@ -41,7 +56,7 @@ export default function PointOfSale() {
     setCart(prev => prev.map(item => item.id === productId ? { ...item, quantity: qty } : item));
   };
 
-  const cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const cartTotal = cart.reduce((sum, item) => sum + (item.activePrice * item.quantity), 0);
 
   const handleGenerateReceipt = (e) => {
     e.preventDefault();
@@ -151,13 +166,22 @@ export default function PointOfSale() {
           ) : (
             <div className="d-flex flex-col gap-2">
               {cart.map(item => (
-                <div key={item.id} className="d-flex justify-between align-center" style={{ background: 'rgba(0,0,0,0.2)', padding: '0.5rem', borderRadius: 'var(--radius-sm)' }}>
-                  <div style={{ flex: 1 }}>
+                <div key={item.id} className="d-flex justify-between align-center" style={{ background: 'rgba(255,255,255,0.05)', padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <div style={{ flex: 1, minWidth: 0 }}>
                     <p className="text-sm font-bold truncate">{item.name}</p>
-                    <p className="text-xs text-muted">Bs. {item.price.toFixed(2)}</p>
+                    <div className="d-flex align-center gap-2 mt-1">
+                      <span className="text-xs text-primary font-bold">Bs. {(Number(item.activePrice) || 0).toFixed(2)}</span>
+                      <button 
+                         onClick={() => togglePrice(item.id)} 
+                         className={`badge ${item.priceType === 'wholesale' ? 'badge-green' : 'badge-blue'}`}
+                         style={{ cursor: 'pointer', border: 'none', fontSize: '0.65rem' }}
+                      >
+                         {item.priceType === 'wholesale' ? 'AL MAYOR' : 'NORMAL'}
+                      </button>
+                    </div>
                   </div>
                   
-                  <div className="d-flex align-center gap-2">
+                  <div className="d-flex align-center gap-2 ml-4">
                     <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="btn btn-secondary" style={{ padding: '0.2rem' }}><Minus size={12}/></button>
                     <span className="text-sm font-bold w-4 text-center">{item.quantity}</span>
                     <button onClick={() => updateQuantity(item.id, item.quantity + 1)} className="btn btn-secondary" style={{ padding: '0.2rem' }} disabled={item.quantity >= item.stock}><Plus size={12}/></button>
