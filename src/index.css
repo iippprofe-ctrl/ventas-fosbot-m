@@ -282,10 +282,17 @@ a:hover {
 
 @media (min-width: 768px) {
   .pos-container {
-    height: calc(100vh - 120px);
+    flex-direction: row !important;
+    height: calc(100vh - 120px) !important;
     overflow: hidden;
   }
-  .pos-catalog, .pos-cart {
+  .pos-catalog {
+    width: 60% !important;
+    height: 100% !important;
+    overflow: hidden;
+  }
+  .pos-cart {
+    width: 40% !important;
     height: 100% !important;
     overflow: hidden;
   }
