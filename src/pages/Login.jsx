@@ -20,13 +20,17 @@ export default function Login() {
   };
 
   return (
-    <div className="d-flex justify-center align-center animate-fade-in" style={{ height: '70vh' }}>
-      <div className="glass-panel" style={{ padding: '3rem', width: '100%', maxWidth: '400px' }}>
-        <h2 className="text-2xl text-center mb-6 font-bold text-main">Acceso Administrativo</h2>
+    <div className="d-flex justify-center align-center animate-fade-in" style={{ minHeight: '80vh', padding: '1rem' }}>
+      <div className="glass-panel" style={{ padding: '3rem 2rem', width: '100%', maxWidth: '400px' }}>
+        <div className="text-center mb-8">
+          <img src="logo.png" alt="Logo" style={{ height: '70px', marginBottom: '1rem', objectFit: 'contain' }} />
+          <h2 className="text-2xl font-bold text-primary">FISBOT MAKER</h2>
+          <p className="text-muted text-sm">Acceso Administrativo</p>
+        </div>
         
         {error && (
-          <div className="badge badge-blue text-danger mb-4 text-center" style={{ display: 'block', background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)' }}>
-            Credenciales incorrectas (tip: admin/admin)
+          <div className="badge badge-blue text-danger mb-4 text-center" style={{ display: 'block', background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)', width: '100%' }}>
+            Credenciales incorrectas (Tip: admin / admin)
           </div>
         )}
 

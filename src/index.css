@@ -231,39 +231,45 @@ a:hover {
 .badge-blue { background: rgba(30, 131, 252, 0.1); color: var(--primary-color); border: 1px solid rgba(30, 131, 252, 0.2); }
 .badge-green { background: rgba(140, 225, 89, 0.1); color: var(--secondary-color); border: 1px solid rgba(140, 225, 89, 0.2); }
 
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-  nav {
+/* Navbar Responsive */
+@media (max-width: 900px) {
+  .navbar {
     margin: 10px 0.5rem !important;
     padding: 0.75rem 1rem !important;
-    gap: 0.5rem;
+  }
+  .brand-name { font-size: 1rem !important; }
+  .mobile-toggle { display: flex !important; }
+  
+  .nav-links {
+    display: none !important;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    background: #0f172a; /* Solid dark background for menu */
+    flex-direction: column;
+    padding: 1.5rem;
+    border-top: 1px solid var(--surface-border);
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+    gap: 1.5rem !important;
+    z-index: 1000;
   }
   
-  .text-2xl {
-    font-size: 1.1rem !important;
+  .nav-links.open {
+    display: flex !important;
   }
   
-  nav img {
-    height: 35px !important;
+  .nav-link {
+    width: 100%;
+    justify-content: center;
   }
 
-  .grid {
-    grid-template-columns: 1fr !important;
-    gap: 1rem !important;
-  }
-
-  .glass-panel {
-    padding: 1rem !important;
-  }
+  .hide-mobile { display: none; }
 }
 
 @media (max-width: 480px) {
-  .btn {
-    padding: 0.4rem 0.8rem !important;
-    font-size: 0.75rem !important;
-  }
-  
-  .font-bold.text-2xl {
+  .brand-name {
     display: none; /* Hide store name text on very small screens to fit logo and buttons */
   }
 }

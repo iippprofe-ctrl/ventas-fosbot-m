@@ -80,7 +80,8 @@ export const initStore = async () => {
     fetch(API_URL)
       .then(res => res.json())
       .then(cloudDb => {
-        if (cloudDb.productos) {
+        // Solo sobreescribir si hay datos reales en la nube
+        if (cloudDb.productos && Array.isArray(cloudDb.productos) && cloudDb.productos.length > 0) {
             const parsed = cloudDb.productos.map(p => ({
                 ...p,
                 price: Number(p.price) || 0,
@@ -88,8 +89,10 @@ export const initStore = async () => {
                 stock: Number(p.stock) || 0
             }));
             localStorage.setItem('fisbot_products', JSON.stringify(parsed));
+            console.log('FISBOT_CLOUD: Catálogo actualizado desde la nube.');
         }
-        if (cloudDb.ventas) {
+        
+        if (cloudDb.ventas && Array.isArray(cloudDb.ventas) && cloudDb.ventas.length > 0) {
             const parsed = cloudDb.ventas.map(v => ({
                 ...v,
                 total: Number(v.total) || 0,
@@ -102,8 +105,12 @@ export const initStore = async () => {
             }));
             localStorage.setItem('fisbot_sales', JSON.stringify(parsed));
         }
-        if (cloudDb.usuarios) localStorage.setItem('fisbot_users_db', JSON.stringify(cloudDb.usuarios));
-        if (cloudDb.configuracion) {
+
+        if (cloudDb.usuarios && Array.isArray(cloudDb.usuarios) && cloudDb.usuarios.length > 0) {
+            localStorage.setItem('fisbot_users_db', JSON.stringify(cloudDb.usuarios));
+        }
+
+        if (cloudDb.configuracion && Array.isArray(cloudDb.configuracion)) {
             const config = {};
             cloudDb.configuracion.forEach(item => { 
                 let val = item.value;
@@ -114,9 +121,12 @@ export const initStore = async () => {
                 } catch(e) {}
                 config[item.key] = val; 
             });
-            if (Object.keys(config).length > 0) localStorage.setItem('fisbot_settings', JSON.stringify(config));
+            if (Object.keys(config).length > 0) {
+              const current = JSON.parse(localStorage.getItem('fisbot_settings') || '{}');
+              localStorage.setItem('fisbot_settings', JSON.stringify({ ...current, ...config }));
+              console.log('FISBOT_CLOUD: Ajustes actualizados desde la nube.');
+            }
         }
-        console.log('FISBOT_CLOUD: Datos actualizados desde la nube.');
         window.dispatchEvent(new Event('fisbot_settings_updated'));
       })
       .catch(e => {
