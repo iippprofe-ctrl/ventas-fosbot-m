@@ -120,7 +120,7 @@ export default function PointOfSale() {
   return (
     <div className="pos-container gap-6">
       {/* Product List */}
-      <div className="glass-panel pos-catalog d-flex flex-col" style={{ flex: 1 }}>
+      <div className="glass-panel pos-catalog d-flex flex-col">
         <h3 className="font-bold text-xl mb-4 text-primary text-center w-100">CATÁLOGO DE PRODUCTOS</h3>
         
         <div className="mb-4 position-relative d-flex align-center" style={{ position: 'relative' }}>
@@ -162,7 +162,7 @@ export default function PointOfSale() {
       </div>
 
       {/* Cart & Checkout */}
-      <div className="glass-panel d-flex flex-col pos-cart" style={{ padding: '1.5rem' }}>
+      <div className="glass-panel d-flex flex-col pos-cart">
         <h3 className="font-bold text-lg mb-4 text-secondary d-flex align-center gap-2">
           <ShoppingCart size={20} /> VENTA ACTUAL
         </h3>

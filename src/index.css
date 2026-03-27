@@ -284,19 +284,25 @@ a:hover {
   .pos-container {
     flex-direction: row !important;
     height: calc(100vh - 120px) !important;
-    overflow: hidden;
+    display: flex !important;
   }
   .pos-catalog {
-    width: 60% !important;
+    flex: 3 !important;
+    min-width: 0;
     height: 100% !important;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
   }
   .pos-cart {
-    width: 40% !important;
+    flex: 2 !important;
+    min-width: 320px;
     height: 100% !important;
-    overflow: hidden;
+    padding: 1.5rem !important;
+    display: flex;
+    flex-direction: column;
   }
   .pos-grid-container {
     height: 100%;
+    overflow-y: auto;
   }
 }
