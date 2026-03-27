@@ -6,10 +6,19 @@ export default function ManageProducts() {
   const [products, setProducts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
-  const providers = getSettings().providers || ['P1'];
+  const settings = getSettings();
+  const providers = settings.providers || ['P1'];
+  const categories = settings.categories || ['Componentes Electrónicos'];
   
   const [formData, setFormData] = useState({
-    name: '', description: '', price: '', category: 'Componentes Electrónicos', stock: '', image: '', provider: providers[0]
+    name: '', 
+    description: '', 
+    price: '', 
+    wholesalePrice: '', 
+    category: categories[0] || '', 
+    stock: '', 
+    image: '', 
+    provider: providers[0] || ''
   });
 
   useEffect(() => { loadProducts(); }, []);
