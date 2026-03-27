@@ -29,16 +29,16 @@ body {
   font-family: var(--font-base);
   background-color: var(--bg-color);
   color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
   background-image: 
-    linear-gradient(rgba(30, 131, 252, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(30, 131, 252, 0.07) 1px, transparent 1px),
-    radial-gradient(circle at 15% 50%, rgba(30, 131, 252, 0.15) 0%, transparent 40%),
-    radial-gradient(circle at 85% 30%, rgba(140, 225, 89, 0.1) 0%, transparent 40%);
+    linear-gradient(#1e83fc12 1px, #0000 1px), 
+    linear-gradient(90deg, #1e83fc12 1px, #0000 1px), 
+    radial-gradient(circle at 15%, #1e83fc26 0%, #0000 40%), 
+    radial-gradient(circle at 85% 30%, #8ce1591a 0%, #0000 40%);
+  background-position: 50%;
   background-size: 30px 30px, 30px 30px, 100% 100%, 100% 100%;
-  background-position: center center;
   background-attachment: fixed;
   min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4, h5, h6 {
