@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useCart } from '../contexts/CartContext';
-import { ShoppingCart, User, LogOut, PackageSearch, MapPin, ExternalLink } from 'lucide-react';
+import { ShoppingCart, User, LogOut, PackageSearch, MapPin, Users, ExternalLink } from 'lucide-react';
 import { getSettings } from '../utils/store';
 
 export default function Navbar() {
