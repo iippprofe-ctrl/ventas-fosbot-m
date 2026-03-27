@@ -65,8 +65,8 @@ export const generateReceiptPDF = (sale, action = 'download') => {
     
     const tableData = sale.items.map(item => [
       item.quantity,
-      item.name,
-      `Bs. ${parseFloat(item.price * item.quantity).toFixed(2)}`
+      `${item.name} (${item.priceType === 'wholesale' ? 'Mayor' : 'Normal'})`,
+      `Bs. ${parseFloat((item.activePrice || item.price) * item.quantity).toFixed(2)}`
     ]);
 
     autoTable(doc, {
