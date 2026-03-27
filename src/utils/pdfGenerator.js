@@ -1,29 +1,37 @@
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { getSettings } from './store';
 
 export const generateCatalogPDF = (products, categoryTitle = 'Todos los Productos') => {
+  const settings = getSettings();
   const doc = new jsPDF();
   const loadedImg = new Image();
-  loadedImg.src = '/logo.png';
+  // Usar ruta relativa para GitHub Pages
+  loadedImg.src = 'logo.png';
 
   const runGeneration = (img) => {
     if (img) {
-      doc.addImage(img, 'PNG', 15, 10, 30, 25);
+      try {
+        doc.addImage(img, 'PNG', 15, 10, 25, 20);
+      } catch(e) {}
     }
 
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(22);
+    doc.setFontSize(20);
     doc.setTextColor(30, 131, 252); 
-    doc.text('FISBOT MAKER', 105, 18, { align: 'center' });
+    doc.text('FISBOT MAKER', 105, 15, { align: 'center' });
     
-    doc.setFontSize(12);
+    doc.setFontSize(9);
     doc.setTextColor(100, 100, 100);
     doc.setFont('helvetica', 'normal');
-    doc.text('Líder en robótica educativa', 105, 26, { align: 'center' });
+    const contactInfo = `Cel: ${settings.phone || '-'} | Ubicación: ${settings.location || 'Consultar'}`;
+    doc.text(contactInfo, 105, 21, { align: 'center' });
+    
+    doc.setFontSize(11);
     doc.setFont('helvetica', 'italic');
-    doc.text(`Catálogo: ${categoryTitle}`, 105, 33, { align: 'center' });
+    doc.text(`Catálogo de Productos - ${categoryTitle}`, 105, 27, { align: 'center' });
 
-    let currentY = 45;
+    let currentY = 38;
     
     const categoriesToDraw = categoryTitle === 'Todos' 
       ? [...new Set(products.map(p => p.category))]
@@ -55,13 +63,14 @@ export const generateCatalogPDF = (products, categoryTitle = 'Todos los Producto
         '', // Placeholder for image
         p.name,
         p.description || '-',
-        `Bs. ${parseFloat(p.price).toFixed(2)}`,
+        `Bs. ${parseFloat(p.price || 0).toFixed(2)}`,
+        `Bs. ${parseFloat(p.wholesalePrice || 0).toFixed(2)}`,
         p.stock > 0 ? 'En Stock' : 'Agotado'
       ]);
 
       autoTable(doc, {
         startY: currentY,
-        head: [['Imagen', 'Nombre del producto', 'Descripción', 'Precio', 'Disponibilidad']],
+        head: [['Imagen', 'Producto', 'Descripción', 'P. Normal', 'P. Mayor', 'Stock']],
         body: tableData,
         theme: 'grid',
         headStyles: { fillColor: [11, 15, 25], textColor: [30, 131, 252] }, 

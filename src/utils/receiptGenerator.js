@@ -4,7 +4,7 @@ import { getSettings } from './store';
 
 export const generateReceiptPDF = (sale, action = 'download') => {
   const img = new Image();
-  img.src = '/logo.png';
+  img.src = 'logo.png';
   
   img.onload = () => {
     createPDF(img);
@@ -20,7 +20,9 @@ export const generateReceiptPDF = (sale, action = 'download') => {
     const settings = getSettings();
     
     if (loadedImg) {
-      doc.addImage(loadedImg, 'PNG', 10, 8, 25, 25);
+      try {
+        doc.addImage(loadedImg, 'PNG', 10, 8, 20, 20);
+      } catch(e) {}
     }
     
     doc.setFont('helvetica', 'bold');
@@ -33,7 +35,7 @@ export const generateReceiptPDF = (sale, action = 'download') => {
     doc.setFont('helvetica', 'normal');
     doc.text('Líder en robótica educativa', 74, 21, { align: 'center' });
     doc.text('Zona Villa Dolores, Plaza Juana Azurduy', 74, 26, { align: 'center' });
-    doc.text(`Cel: ${settings.whatsapp}`, 74, 31, { align: 'center' });
+    doc.text(`Cel: ${settings.phone || settings.whatsapp || '-'}`, 74, 31, { align: 'center' });
     
     doc.setLineWidth(0.5);
     doc.setDrawColor(200, 200, 200);
@@ -57,9 +59,9 @@ export const generateReceiptPDF = (sale, action = 'download') => {
     doc.text(`${sale.customerName}`, 25, 57);
 
     doc.setFont('helvetica', 'bold');
-    doc.text(`Vendedor (TIENDA):`, 10, 63);
+    doc.text(`Punto de Venta:`, 10, 63);
     doc.setFont('helvetica', 'normal');
-    doc.text(`${sale.sellerName}`, 45, 63);
+    doc.text(`${sale.sellerName}`, 40, 63);
     
     const tableData = sale.items.map(item => [
       item.quantity,

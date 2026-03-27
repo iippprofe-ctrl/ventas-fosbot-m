@@ -8,6 +8,7 @@ const INITIAL_PRODUCTS = [
     name: 'Kit Resonador Cerámico Sensible',
     description: 'Componente electrónico para control de oscilación preciso.',
     price: 15.50,
+    wholesalePrice: 12.00,
     category: 'Componentes Electrónicos',
     stock: 50,
     image: 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80',
@@ -18,6 +19,7 @@ const INITIAL_PRODUCTS = [
     name: 'Placa PCB Prototipado Rápido',
     description: 'Matriz de puntos para soldar componentes electrónicos rápida.',
     price: 35.00,
+    wholesalePrice: 30.00,
     category: 'Robótica',
     subcategory: 'Placas PCB',
     stock: 100,
@@ -29,6 +31,9 @@ const INITIAL_PRODUCTS = [
 const DEFAULT_SETTINGS = {
   whatsapp: '59100000000',
   providers: ['P1', 'P2', 'P3'],
+  categories: ['Componentes Electrónicos', 'Robótica', 'Sensores', 'Herramientas'],
+  location: 'https://goo.gl/maps/example',
+  phone: '59100000000',
   master_user: 'admin',
   master_pass: 'admin'
 };
@@ -80,6 +85,7 @@ export const initStore = async () => {
             const parsed = cloudDb.productos.map(p => ({
                 ...p,
                 price: parseFloat(p.price || 0),
+                wholesalePrice: parseFloat(p.wholesalePrice || 0),
                 stock: parseInt(p.stock || 0)
             }));
             localStorage.setItem('fisbot_products', JSON.stringify(parsed));
@@ -91,6 +97,7 @@ export const initStore = async () => {
                 items: Array.isArray(v.items) ? v.items.map(it => ({
                     ...it,
                     price: parseFloat(it.price || 0),
+                    wholesalePrice: parseFloat(it.wholesalePrice || 0),
                     quantity: parseInt(it.quantity || 0)
                 })) : []
             }));
@@ -99,7 +106,15 @@ export const initStore = async () => {
         if (cloudDb.usuarios) localStorage.setItem('fisbot_users_db', JSON.stringify(cloudDb.usuarios));
         if (cloudDb.configuracion) {
             const config = {};
-            cloudDb.configuracion.forEach(item => { config[item.key] = item.value; });
+            cloudDb.configuracion.forEach(item => { 
+                let val = item.value;
+                try { 
+                  if (typeof val === 'string' && (val.startsWith('[') || val.startsWith('{'))) {
+                    val = JSON.parse(val); 
+                  }
+                } catch(e) {}
+                config[item.key] = val; 
+            });
             if (Object.keys(config).length > 0) localStorage.setItem('fisbot_settings', JSON.stringify(config));
         }
         console.log('FISBOT_CLOUD: Datos actualizados desde la nube.');

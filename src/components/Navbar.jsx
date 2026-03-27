@@ -1,11 +1,13 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useCart } from '../contexts/CartContext';
-import { ShoppingCart, User, LogOut, PackageSearch } from 'lucide-react';
+import { ShoppingCart, User, LogOut, PackageSearch, MapPin, ExternalLink } from 'lucide-react';
+import { getSettings } from '../utils/store';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
   const { cartItemCount } = useCart();
+  const settings = getSettings();
 
   return (
     <nav className="glass-panel" style={{ 
@@ -23,6 +25,16 @@ export default function Navbar() {
       </div>
 
       <div className="d-flex align-center gap-4">
+        <a 
+          href={settings.location || '#'} 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="text-sm font-bold text-muted hover:text-secondary d-flex align-center gap-1"
+          style={{ transition: '0.3s' }}
+        >
+          <MapPin size={16} /> UBICACIÓN
+        </a>
+
         <Link to="/" className="text-sm font-bold text-muted hover:text-primary" style={{ transition: '0.3s' }}>
           CATÁLOGO
         </Link>
@@ -48,7 +60,7 @@ export default function Navbar() {
           </div>
         ) : (
           <Link to="/login" className="btn btn-secondary" style={{ padding: '0.5rem 1.5rem' }}>
-            <User size={18} /> Entrar
+            <User size={18} /> Iniciar Sesión
           </Link>
         )}
       </div>

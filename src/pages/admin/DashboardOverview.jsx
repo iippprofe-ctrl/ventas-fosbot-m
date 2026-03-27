@@ -1,12 +1,16 @@
 import { useState, useEffect } from 'react';
 import { getSales, getProducts, getSettings, saveSettings, clearSales } from '../../utils/store';
-import { TrendingUp, Package, Users, ShoppingCart, Settings, RefreshCcw, Smartphone } from 'lucide-react';
+import { TrendingUp, Package, Users, ShoppingCart, Settings, RefreshCcw, Smartphone, MapPin, Phone, Hash } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 export default function DashboardOverview() {
   const [sales, setSales] = useState([]);
   const [products, setProducts] = useState([]);
   const [whatsapp, setWhatsapp] = useState('');
+  const [phone, setPhone] = useState('');
+  const [location, setLocation] = useState('');
+  const [categoryList, setCategoryList] = useState([]);
+  const [newCategory, setNewCategory] = useState('');
   const [providerList, setProviderList] = useState([]);
   const [newProvider, setNewProvider] = useState('');
   const [masterUser, setMasterUser] = useState('');
@@ -17,7 +21,10 @@ export default function DashboardOverview() {
     const settings = getSettings();
     setSales(getSales());
     setProducts(getProducts());
-    setWhatsapp(settings.whatsapp);
+    setWhatsapp(settings.whatsapp || '');
+    setPhone(settings.phone || '');
+    setLocation(settings.location || '');
+    setCategoryList(settings.categories || []);
     setProviderList(settings.providers || []);
     setMasterUser(settings.master_user || 'admin');
     setMasterPass(settings.master_pass || 'admin');
@@ -25,13 +32,28 @@ export default function DashboardOverview() {
 
   const handleSaveSettings = () => {
     saveSettings({ 
-      whatsapp, 
+      whatsapp,
+      phone,
+      location,
+      categories: categoryList,
       providers: providerList,
       master_user: masterUser,
       master_pass: masterPass
     });
-    alert('Configuración guardada exitosamente. Los cambios de acceso MASTER se aplicarán al recargar.');
+    alert('Configuración guardada en la nube exitosamente.');
     window.location.reload();
+  };
+
+  const handleAddCategory = () => {
+    if (newCategory && !categoryList.includes(newCategory)) {
+      const updated = [...categoryList, newCategory];
+      setCategoryList(updated);
+      setNewCategory('');
+    }
+  };
+
+  const handleRemoveCategory = (cat) => {
+    setCategoryList(prev => prev.filter(c => c !== cat));
   };
 
   const handleAddProvider = () => {
@@ -125,39 +147,71 @@ export default function DashboardOverview() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="d-flex flex-col gap-6">
-              <div>
-                <label className="text-sm font-bold text-muted d-flex align-center gap-2 mb-2">
-                  <Smartphone size={16} /> WhatsApp de Contacto
-                </label>
-                <div className="d-flex gap-2">
-                  <input className="input-base" value={whatsapp} onChange={e => setWhatsapp(e.target.value)} />
-                  <button className="btn btn-primary" onClick={handleSaveSettings}>OK</button>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-bold text-muted d-flex align-center gap-2 mb-2">
+                    <Smartphone size={16} /> WhatsApp de Ventas
+                  </label>
+                  <input className="input-base" value={whatsapp} onChange={e => setWhatsapp(e.target.value)} placeholder="591..." />
                 </div>
-                <p className="text-xs mt-2" style={{ color: 'var(--primary-color)' }}>
-                  Actualmente guardado: <strong>{getSettings().whatsapp}</strong>
-                </p>
+                <div>
+                  <label className="text-sm font-bold text-muted d-flex align-center gap-2 mb-2">
+                    <Phone size={16} /> Teléfono Tienda
+                  </label>
+                  <input className="input-base" value={phone} onChange={e => setPhone(e.target.value)} placeholder="44..." />
+                </div>
               </div>
 
               <div>
                 <label className="text-sm font-bold text-muted d-flex align-center gap-2 mb-2">
-                  <Package size={16} /> Gestión de Proveedores
+                  <MapPin size={16} /> Link Ubicación (Google Maps)
                 </label>
-                <div className="d-flex gap-2">
-                  <input className="input-base" value={newProvider} onChange={e => setNewProvider(e.target.value)} placeholder="Ej. P4" />
-                  <button className="btn btn-secondary" onClick={handleAddProvider}>Añadir</button>
+                <input className="input-base" value={location} onChange={e => setLocation(e.target.value)} placeholder="https://goo.gl/maps/..." />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label className="text-sm font-bold text-muted d-flex align-center gap-2 mb-2">
+                    <Hash size={16} /> Categorías de Productos
+                  </label>
+                  <div className="d-flex gap-2">
+                    <input className="input-base" value={newCategory} onChange={e => setNewCategory(e.target.value)} placeholder="Ej. Sensores" />
+                    <button className="btn btn-secondary" onClick={handleAddCategory}>+</button>
+                  </div>
+                  <div className="d-flex gap-2 flex-wrap mt-3">
+                    {categoryList.map(c => (
+                      <span key={c} className="badge badge-green d-flex align-center gap-2">
+                        {c} <RefreshCcw size={10} style={{ cursor: 'pointer' }} onClick={() => handleRemoveCategory(c)} />
+                      </span>
+                    ))}
+                  </div>
                 </div>
-                <div className="d-flex gap-2 flex-wrap mt-3">
-                  {providerList.map(p => (
-                    <span key={p} className="badge badge-blue d-flex align-center gap-2">
-                      {p} <RefreshCcw size={10} style={{ cursor: 'pointer' }} onClick={() => handleRemoveProvider(p)} />
-                    </span>
-                  ))}
+
+                <div>
+                  <label className="text-sm font-bold text-muted d-flex align-center gap-2 mb-2">
+                    <Package size={16} /> Lista de Proveedores
+                  </label>
+                  <div className="d-flex gap-2">
+                    <input className="input-base" value={newProvider} onChange={e => setNewProvider(e.target.value)} placeholder="Ej. P1" />
+                    <button className="btn btn-secondary" onClick={handleAddProvider}>+</button>
+                  </div>
+                  <div className="d-flex gap-2 flex-wrap mt-3">
+                    {providerList.map(p => (
+                      <span key={p} className="badge badge-blue d-flex align-center gap-2">
+                        {p} <RefreshCcw size={10} style={{ cursor: 'pointer' }} onClick={() => handleRemoveProvider(p)} />
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
+
+              <button className="btn btn-primary" style={{ width: '100%', padding: '1rem' }} onClick={handleSaveSettings}>
+                <Settings size={20} /> GUARDAR CONFIGURACIÓN EN LA NUBE
+              </button>
 
               <div className="mt-4 pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
                 <label className="text-sm font-bold text-secondary d-flex align-center gap-2 mb-3">
-                  <Users size={16} /> Credenciales de Acceso MASTER
+                  <Users size={16} /> Cambio de Usuario/Contraseña MASTER
                 </label>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
@@ -169,7 +223,6 @@ export default function DashboardOverview() {
                     <input className="input-base mt-1" type="text" value={masterPass} onChange={e => setMasterPass(e.target.value)} />
                   </div>
                 </div>
-                <button className="btn btn-primary mt-4" style={{ width: '100%' }} onClick={handleSaveSettings}>Guardar Credenciales MASTER</button>
               </div>
             </div>
 

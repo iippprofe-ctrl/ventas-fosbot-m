@@ -19,16 +19,21 @@ export default function ProductCard({ product }) {
           <h3 className="text-lg">{product.name}</h3>
           <p className="text-muted text-sm mt-2">{product.description}</p>
         </div>
-        <div className="mt-4 d-flex justify-between align-center">
-          <span className="text-primary font-bold text-xl">Bs. {parseFloat(product.price).toFixed(2)}</span>
+        <div className="mt-4 d-flex justify-between align-end">
+          <div className="d-flex flex-col">
+            <span className="text-primary font-bold text-xl">Bs. {(Number(product.price) || 0).toFixed(2)}</span>
+            <span className="text-muted" style={{ fontSize: '0.7rem', marginTop: '-2px' }}>
+              Precio por mayor: Bs. {(Number(product.wholesalePrice) || 0).toFixed(2)}
+            </span>
+          </div>
           {(!user || user.role === 'buyer') && (
             <button 
               className="btn btn-primary" 
               onClick={() => addToCart(product)}
               disabled={product.stock <= 0}
-              style={{ padding: '0.5rem 1rem' }}
+              style={{ padding: '0.4rem 0.8rem' }}
             >
-              {product.stock > 0 ? <ShoppingCart size={18} /> : 'Agotado'}
+              {product.stock > 0 ? <ShoppingCart size={16} /> : 'Agotado'}
             </button>
           )}
         </div>

@@ -22,8 +22,9 @@ export default function ManageProducts() {
     const payload = {
       ...formData,
       id: editingId || Date.now().toString(),
-      price: parseFloat(formData.price),
-      stock: parseInt(formData.stock)
+      price: parseFloat(formData.price || 0),
+      wholesalePrice: parseFloat(formData.wholesalePrice || 0),
+      stock: parseInt(formData.stock || 0)
     };
     
     saveProduct(payload);
@@ -36,7 +37,16 @@ export default function ManageProducts() {
       setFormData(product);
       setEditingId(product.id);
     } else {
-      setFormData({ name: '', description: '', price: '', category: 'Componentes Electrónicos', stock: '', image: '', provider: providers[0] });
+      setFormData({ 
+        name: '', 
+        description: '', 
+        price: '', 
+        wholesalePrice: '', 
+        category: categories[0] || '', 
+        stock: '', 
+        image: '', 
+        provider: providers[0] || '' 
+      });
       setEditingId(null);
     }
     setIsModalOpen(true);
@@ -66,7 +76,7 @@ export default function ManageProducts() {
               <th className="p-3 text-muted">Nombre</th>
               <th className="p-3 text-muted">Categoría</th>
               <th className="p-3 text-muted">Prov.</th>
-              <th className="p-3 text-muted">Precio</th>
+              <th className="p-3 text-muted">Precios</th>
               <th className="p-3 text-muted">Stock</th>
               <th className="p-3 text-muted text-right">Acciones</th>
             </tr>
@@ -80,7 +90,12 @@ export default function ManageProducts() {
                 <td className="p-3 font-bold text-sm" style={{ maxWidth: '200px' }}>{p.name}</td>
                 <td className="p-3"><span className="badge badge-green">{p.category}</span></td>
                 <td className="p-3"><span className="text-muted text-xs font-bold">{p.provider || '-'}</span></td>
-                <td className="p-3 font-bold text-primary">Bs. {p.price.toFixed(2)}</td>
+                <td className="p-3">
+                  <div className="d-flex flex-col">
+                    <span className="font-bold text-primary">Bs. {Number(p.price || 0).toFixed(2)}</span>
+                    <span className="text-xs text-muted">Mayor: Bs. {Number(p.wholesalePrice || 0).toFixed(2)}</span>
+                  </div>
+                </td>
                 <td className="p-3">{p.stock}</td>
                 <td className="p-3">
                   <div className="d-flex justify-right gap-2" style={{ justifyContent: 'flex-end' }}>
@@ -103,14 +118,22 @@ export default function ManageProducts() {
               <input className="input-base" required placeholder="Nombre del Producto" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
               <textarea className="input-base" placeholder="Descripción detallada" rows="3" value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} />
               <div className="d-flex gap-4">
-                <input className="input-base" required type="number" step="0.10" placeholder="Precio (Bs)" value={formData.price} onChange={e => setFormData({...formData, price: e.target.value})} />
-                <input className="input-base" required type="number" placeholder="Stock Disponible" value={formData.stock} onChange={e => setFormData({...formData, stock: e.target.value})} />
+                <div style={{ flex: 1 }}>
+                  <label className="text-xs text-muted mb-1 d-block">P. Normal</label>
+                  <input className="input-base" required type="number" step="0.10" placeholder="Bs" value={formData.price} onChange={e => setFormData({...formData, price: e.target.value})} />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <label className="text-xs text-muted mb-1 d-block">P. Mayor</label>
+                  <input className="input-base" required type="number" step="0.10" placeholder="Bs" value={formData.wholesalePrice} onChange={e => setFormData({...formData, wholesalePrice: e.target.value})} />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <label className="text-xs text-muted mb-1 d-block">Stock</label>
+                  <input className="input-base" required type="number" placeholder="Cant." value={formData.stock} onChange={e => setFormData({...formData, stock: e.target.value})} />
+                </div>
               </div>
               <div className="d-flex gap-4">
                 <select className="input-base" value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} style={{ color: '#fff', background: '#0b0f19' }}>
-                  <option>Componentes Electrónicos</option>
-                  <option>Impresión 3D</option>
-                  <option>Robótica</option>
+                  {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
                 </select>
                 <select className="input-base" value={formData.provider} onChange={e => setFormData({...formData, provider: e.target.value})} style={{ color: '#fff', background: '#0b0f19' }}>
                   {providers.map(p => <option key={p} value={p}>{p}</option>)}
