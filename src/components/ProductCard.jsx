@@ -16,8 +16,8 @@ export default function ProductCard({ product }) {
       <div className="mt-4 flex-col d-flex justify-between" style={{ flexGrow: 1 }}>
         <div>
           <span className="badge badge-green mb-2">{product.category}</span>
-          <h3 className="text-lg">{product.name}</h3>
-          <p className="text-muted text-sm mt-2">{product.description}</p>
+          <h3 className="text-lg font-bold" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{product.name}</h3>
+          <p className="text-muted text-sm mt-1" style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden', minHeight: '3em' }}>{product.description}</p>
         </div>
         <div className="mt-4 d-flex justify-between align-end">
           <div className="d-flex flex-col">

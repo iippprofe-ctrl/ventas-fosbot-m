@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import ProductCard from '../components/ProductCard';
-import { getProducts } from '../utils/store';
+import { getProducts, getSettings } from '../utils/store';
 import { Download, Search } from 'lucide-react';
 import { generateCatalogPDF } from '../utils/pdfGenerator';
 
@@ -8,6 +8,7 @@ export default function Home() {
   const [products, setProducts] = useState([]);
   const [category, setCategory] = useState('Todos');
   const [searchTerm, setSearchTerm] = useState('');
+  const settings = getSettings();
 
   useEffect(() => {
     setProducts(getProducts());
@@ -19,7 +20,7 @@ export default function Home() {
     return matchCat && matchSearch;
   });
 
-  const categories = ['Todos', 'Componentes Electrónicos', 'Impresión 3D', 'Robótica'];
+  const categories = ['Todos', ...(settings.categories || [])];
 
   return (
     <div className="animate-fade-in">
