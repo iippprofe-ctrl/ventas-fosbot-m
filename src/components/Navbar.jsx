@@ -15,56 +15,53 @@ export default function Navbar() {
   return (
     <nav className="glass-panel navbar" style={{ 
       position: 'sticky', top: '10px', zIndex: 1000, 
-      margin: '10px 1.5rem', padding: '0.75rem 1.5rem',
-      display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+      margin: '10px 0.5rem', padding: '0.5rem 0.75rem',
+      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+      gap: '0.5rem'
     }}>
-      <div className="d-flex align-center gap-3">
-        <Link to="/" className="d-flex align-center gap-1" style={{ color: 'var(--text-main)' }}>
-          <img src="logo.png" alt="Logo" style={{ height: '45px', objectFit: 'contain' }} />
-          <span className="brand-name font-bold text-xl" style={{ fontFamily: 'var(--font-display)', letterSpacing: '1px', color: 'var(--primary-color)' }}>
+      <div className="d-flex align-center">
+        <Link to="/" className="d-flex align-center" style={{ color: 'var(--text-main)' }}>
+          <img src="logo.png" alt="Logo" style={{ height: '35px', objectFit: 'contain' }} />
+          <span className="brand-name font-bold text-lg ml-2 hide-mobile" style={{ fontFamily: 'var(--font-display)', letterSpacing: '0.5px', color: 'var(--primary-color)' }}>
             FISBOT MAKER
           </span>
         </Link>
       </div>
 
-      {/* Mobile Toggle */}
-      <button className="mobile-toggle btn btn-secondary" onClick={() => setIsMenuOpen(!isMenuOpen)} style={{ display: 'none', padding: '0.5rem' }}>
-        <User size={20} />
-      </button>
-
-      <div className={`nav-links d-flex align-center gap-4 ${isMenuOpen ? 'open' : ''}`}>
+      <div className="nav-links d-flex align-center gap-2 sm:gap-3">
         <a 
           href={settings.location || '#'} 
           target="_blank" 
           rel="noopener noreferrer" 
-          className="nav-link text-sm font-bold text-muted hover:text-secondary d-flex align-center gap-1"
+          className="btn btn-secondary p-2"
+          title="Ubicación"
         >
-          <MapPin size={16} /> <span className="hide-mobile">UBICACIÓN</span>
+          <MapPin size={18} />
         </a>
 
-        <Link to="/" className="nav-link text-sm font-bold text-muted hover:text-primary">
-          CATÁLOGO
+        <Link to="/" className="btn btn-secondary p-2" title="Catálogo">
+          <PackageSearch size={18} />
         </Link>
         
         {!user || user.role === 'buyer' ? (
-          <Link to="/checkout" className="nav-link btn btn-secondary" style={{ padding: '0.4rem 0.8rem' }}>
+          <Link to="/checkout" className="btn btn-secondary p-2 position-relative">
             <ShoppingCart size={18} />
-            {cartItemCount > 0 && <span className="badge badge-blue">{cartItemCount}</span>}
+            {cartItemCount > 0 && <span className="badge badge-blue" style={{ position: 'absolute', top: '-5px', right: '-5px', fontSize: '0.6rem', padding: '2px 4px' }}>{cartItemCount}</span>}
           </Link>
         ) : null}
 
         {user ? (
           <div className="d-flex align-center gap-2">
-            <Link to="/admin" className="btn btn-primary" style={{ padding: '0.4rem 0.8rem' }}>
-              <PackageSearch size={18} /> <span className="hide-mobile">Panel</span>
+            <Link to="/admin" className="btn btn-primary p-2" title="Panel">
+              <Users size={18} />
             </Link>
-            <button onClick={logout} className="btn btn-danger" style={{ padding: '0.4rem' }}>
+            <button onClick={logout} className="btn btn-danger p-2">
               <LogOut size={18} />
             </button>
           </div>
         ) : (
-          <Link to="/login" className="btn btn-secondary login-btn" style={{ padding: '0.5rem 1rem' }}>
-             Iniciar Sesión
+          <Link to="/login" className="btn btn-secondary p-2" title="Iniciar Sesión">
+             <User size={18} />
           </Link>
         )}
       </div>

@@ -120,8 +120,8 @@ export default function PointOfSale() {
   return (
     <div className="pos-container gap-6">
       {/* Product List */}
-      <div className="glass-panel pos-catalog">
-        <h3 className="font-bold text-lg mb-4 text-primary">Catálogo</h3>
+      <div className="glass-panel pos-catalog d-flex flex-col" style={{ flex: 1 }}>
+        <h3 className="font-bold text-xl mb-4 text-primary text-center w-100">CATÁLOGO DE PRODUCTOS</h3>
         
         <div className="mb-4 position-relative d-flex align-center" style={{ position: 'relative' }}>
           <Search size={18} className="text-muted" style={{ position: 'absolute', left: '1rem' }} />
@@ -135,64 +135,67 @@ export default function PointOfSale() {
           />
         </div>
 
-        <div className="d-flex flex-col gap-2" style={{ overflowY: 'auto', flex: 1, paddingRight: '0.5rem', scrollBehavior: 'smooth' }}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="pos-grid-container" style={{ overflowY: 'auto', flex: 1 }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {filtered.map(p => (
-              <div key={p.id} className="glass-card d-flex flex-col justify-between" style={{ padding: '0.75rem', border: '1px solid var(--surface-border)', minHeight: '80px' }}>
+              <div key={p.id} className="glass-card d-flex flex-col justify-between" style={{ padding: '0.75rem', minHeight: '100px' }}>
                 <div className="mb-2">
-                  <p className="font-bold text-sm truncate" title={p.name}>{p.name}</p>
+                  <p className="font-bold text-sm truncate">{p.name}</p>
                   <p className="text-xs text-muted">Stock: <span className={p.stock < 5 ? 'text-danger font-bold' : ''}>{p.stock}</span></p>
                 </div>
                 <div className="d-flex justify-between align-center">
                   <span className="text-primary font-bold text-sm">Bs. {(Number(p.price) || 0).toFixed(2)}</span>
                   <button 
                     className="btn btn-secondary"
-                    style={{ padding: '0.3rem', borderRadius: '50%' }}
+                    style={{ padding: '0.4rem', borderRadius: '50%' }}
                     onClick={() => addToCart(p)}
                     disabled={p.stock <= 0}
                   >
-                    <Plus size={14} />
+                    <Plus size={16} />
                   </button>
                 </div>
               </div>
             ))}
           </div>
-          {filtered.length === 0 && <p className="text-muted text-sm text-center mt-4">No hay resultados.</p>}
+          {filtered.length === 0 && <p className="text-muted text-sm text-center mt-6">No hay resultados.</p>}
         </div>
       </div>
 
       {/* Cart & Checkout */}
-      <div className="glass-panel d-flex flex-col" style={{ padding: '1.5rem', maxHeight: '75vh' }}>
+      <div className="glass-panel d-flex flex-col pos-cart" style={{ padding: '1.5rem' }}>
         <h3 className="font-bold text-lg mb-4 text-secondary d-flex align-center gap-2">
-          <ShoppingCart size={20} /> Venta Actual
+          <ShoppingCart size={20} /> VENTA ACTUAL
         </h3>
 
-        <div className="overflow-y-auto" style={{ overflowY: 'auto', flexGrow: 1, marginBottom: '1rem' }}>
+        <div className="cart-items-container" style={{ overflowY: 'auto', flexGrow: 1, marginBottom: '1rem' }}>
           {cart.length === 0 ? (
-            <p className="text-muted text-center text-sm mt-4">Añada productos para generar la venta.</p>
+            <p className="text-muted text-center text-sm mt-8">El carrito está vacío.</p>
           ) : (
-            <div className="d-flex flex-col gap-2">
+            <div className="d-flex flex-col gap-3">
               {cart.map(item => (
-                <div key={item.id} className="d-flex justify-between align-center" style={{ background: 'rgba(255,255,255,0.05)', padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <p className="text-sm font-bold truncate">{item.name}</p>
-                    <div className="d-flex align-center gap-2 mt-1">
-                      <span className="text-xs text-primary font-bold">Bs. {(Number(item.activePrice) || 0).toFixed(2)}</span>
-                      <button 
-                         onClick={() => togglePrice(item.id)} 
-                         className={`badge ${item.priceType === 'wholesale' ? 'badge-green' : 'badge-blue'}`}
-                         style={{ cursor: 'pointer', border: 'none', fontSize: '0.65rem' }}
-                      >
-                         {item.priceType === 'wholesale' ? 'AL MAYOR' : 'NORMAL'}
-                      </button>
-                    </div>
+                <div key={item.id} className="glass-card" style={{ padding: '1rem', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <div className="d-flex justify-between align-start mb-2">
+                    <p className="text-xs font-bold truncate" style={{ maxWidth: '70%' }}>{item.name}</p>
+                    <button onClick={() => updateQuantity(item.id, 0)} className="text-danger" style={{ background: 'none', border: 'none' }}><Trash2 size={16}/></button>
                   </div>
                   
-                  <div className="d-flex align-center gap-2 ml-4">
-                    <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="btn btn-secondary" style={{ padding: '0.2rem' }}><Minus size={12}/></button>
-                    <span className="text-sm font-bold w-4 text-center">{item.quantity}</span>
-                    <button onClick={() => updateQuantity(item.id, item.quantity + 1)} className="btn btn-secondary" style={{ padding: '0.2rem' }} disabled={item.quantity >= item.stock}><Plus size={12}/></button>
-                    <button onClick={() => updateQuantity(item.id, 0)} className="text-danger ml-2" style={{ background: 'none', border: 'none', cursor: 'pointer' }}><Trash2 size={16}/></button>
+                  <div className="d-flex justify-between align-center flex-wrap gap-2">
+                    <div className="d-flex flex-col">
+                      <span className="text-sm text-primary font-bold">Bs. {((Number(item.activePrice) || 0) * item.quantity).toFixed(2)}</span>
+                      <button 
+                         onClick={() => togglePrice(item.id)} 
+                         className={`badge mt-1 ${item.priceType === 'wholesale' ? 'badge-green' : 'badge-blue'}`}
+                         style={{ cursor: 'pointer', border: 'none', fontSize: '0.6rem', alignSelf: 'flex-start' }}
+                      >
+                         {item.priceType === 'wholesale' ? 'MAYOR' : 'NORMAL'}
+                      </button>
+                    </div>
+
+                    <div className="d-flex align-center gap-2 glass-panel" style={{ padding: '0.25rem 0.5rem', borderRadius: 'var(--radius-sm)' }}>
+                      <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="btn btn-secondary p-1" style={{ width: '24px', height: '24px' }}><Minus size={12}/></button>
+                      <span className="text-sm font-bold min-w-[20px] text-center">{item.quantity}</span>
+                      <button onClick={() => updateQuantity(item.id, item.quantity + 1)} className="btn btn-secondary p-1" style={{ width: '24px', height: '24px' }} disabled={item.quantity >= item.stock}><Plus size={12}/></button>
+                    </div>
                   </div>
                 </div>
               ))}
