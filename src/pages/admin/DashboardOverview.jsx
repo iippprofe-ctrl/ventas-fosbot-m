@@ -7,7 +7,6 @@ export default function DashboardOverview() {
   const [sales, setSales] = useState([]);
   const [products, setProducts] = useState([]);
   const [whatsapp, setWhatsapp] = useState('');
-  const [phone, setPhone] = useState('');
   const [location, setLocation] = useState('');
   const [categoryList, setCategoryList] = useState([]);
   const [newCategory, setNewCategory] = useState('');
@@ -22,7 +21,6 @@ export default function DashboardOverview() {
     setSales(getSales());
     setProducts(getProducts());
     setWhatsapp(settings.whatsapp || '');
-    setPhone(settings.phone || '');
     setLocation(settings.location || '');
     setCategoryList(settings.categories || []);
     setProviderList(settings.providers || []);
@@ -33,34 +31,41 @@ export default function DashboardOverview() {
   const handleSaveSettings = () => {
     saveSettings({ 
       whatsapp,
-      phone,
       location,
       categories: categoryList,
       providers: providerList,
       master_user: masterUser,
       master_pass: masterPass
     });
-    alert('Configuración guardada en la nube exitosamente.');
+    alert('Configuración guardada exitosamente.');
     window.location.reload();
+  };
+
+  const syncSettings = (updatedFields) => {
+    const current = getSettings();
+    saveSettings({ ...current, ...updatedFields });
   };
 
   const handleAddCategory = () => {
     if (newCategory && !categoryList.includes(newCategory)) {
       const updated = [...categoryList, newCategory];
       setCategoryList(updated);
+      syncSettings({ categories: updated });
       setNewCategory('');
     }
   };
 
   const handleRemoveCategory = (cat) => {
-    setCategoryList(prev => prev.filter(c => c !== cat));
+    const updated = categoryList.filter(c => c !== cat);
+    setCategoryList(updated);
+    syncSettings({ categories: updated });
   };
 
   const handleAddProvider = () => {
     if (newProvider && !providerList.includes(newProvider)) {
       const updated = [...providerList, newProvider];
       setProviderList(updated);
-      saveSettings({ whatsapp, providers: updated });
+      syncSettings({ providers: updated });
       setNewProvider('');
     }
   };
@@ -68,7 +73,7 @@ export default function DashboardOverview() {
   const handleRemoveProvider = (p) => {
     const updated = providerList.filter(item => item !== p);
     setProviderList(updated);
-    saveSettings({ whatsapp, providers: updated });
+    syncSettings({ providers: updated });
   };
 
   const handleResetSales = () => {
@@ -147,18 +152,12 @@ export default function DashboardOverview() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="d-flex flex-col gap-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4">
                 <div>
                   <label className="text-sm font-bold text-muted d-flex align-center gap-2 mb-2">
-                    <Smartphone size={16} /> WhatsApp de Ventas
+                    <Smartphone size={16} /> WhatsApp de Ventas y Contacto (Único)
                   </label>
                   <input className="input-base" value={whatsapp} onChange={e => setWhatsapp(e.target.value)} placeholder="591..." />
-                </div>
-                <div>
-                  <label className="text-sm font-bold text-muted d-flex align-center gap-2 mb-2">
-                    <Phone size={16} /> Teléfono Tienda
-                  </label>
-                  <input className="input-base" value={phone} onChange={e => setPhone(e.target.value)} placeholder="44..." />
                 </div>
               </div>
 

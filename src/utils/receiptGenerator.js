@@ -35,7 +35,7 @@ export const generateReceiptPDF = (sale, action = 'download') => {
     doc.setFont('helvetica', 'normal');
     doc.text('Líder en robótica educativa', 74, 21, { align: 'center' });
     doc.text('Zona Villa Dolores, Plaza Juana Azurduy', 74, 26, { align: 'center' });
-    doc.text(`Cel: ${settings.phone || settings.whatsapp || '-'}`, 74, 31, { align: 'center' });
+    doc.text(`WhatsApp: ${settings.whatsapp || '-'}`, 74, 31, { align: 'center' });
     
     doc.setLineWidth(0.5);
     doc.setDrawColor(200, 200, 200);

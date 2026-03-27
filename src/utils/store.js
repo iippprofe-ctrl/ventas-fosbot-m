@@ -33,7 +33,6 @@ const DEFAULT_SETTINGS = {
   providers: ['P1', 'P2', 'P3'],
   categories: ['Componentes Electrónicos', 'Robótica', 'Sensores', 'Herramientas'],
   location: 'https://goo.gl/maps/example',
-  phone: '59100000000',
   master_user: 'admin',
   master_pass: 'admin'
 };

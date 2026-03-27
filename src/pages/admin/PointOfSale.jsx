@@ -19,13 +19,20 @@ export default function PointOfSale() {
   const filtered = products.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
   const addToCart = (product) => {
+    console.log('FISBOT_POS: Agregando al carrito:', product.name, product.id);
     setCart(prev => {
       const existing = prev.find(item => item.id === product.id);
       if (existing) {
-        if (existing.quantity >= product.stock) return prev; 
+        if (existing.quantity >= product.stock) {
+          alert('Stock insuficiente para este producto.');
+          return prev; 
+        }
         return prev.map(item => item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item);
       }
-      if (product.stock <= 0) return prev;
+      if (product.stock <= 0) {
+        alert('Este producto no tiene stock disponible.');
+        return prev;
+      }
       // Por defecto agregar precio normal
       return [...prev, { ...product, quantity: 1, activePrice: product.price, priceType: 'normal' }];
     });
@@ -211,14 +218,30 @@ export default function PointOfSale() {
             />
           </div>
 
-          <button 
-            type="submit" 
-            className="btn btn-success" 
-            style={{ width: '100%', padding: '0.75rem' }}
-            disabled={cart.length === 0}
-          >
-            <Printer size={18} /> Generar Recibo Automático
-          </button>
+          <div className="d-flex gap-2 mt-6 pt-4" style={{ borderTop: '1px solid var(--surface-border)' }}>
+            <button 
+              type="button" 
+              className="btn btn-secondary" 
+              style={{ flex: 1, padding: '0.75rem' }}
+              onClick={() => {
+                if (window.confirm('¿Desea cancelar la venta actual y limpiar el carrito?')) {
+                  setCart([]);
+                  setCustomerName('');
+                }
+              }}
+              disabled={cart.length === 0}
+            >
+              Cancelar Venta
+            </button>
+            <button 
+              type="submit" 
+              className="btn btn-success" 
+              style={{ flex: 2, padding: '0.75rem' }}
+              disabled={cart.length === 0}
+            >
+              <Printer size={18} /> Generar Recibo
+            </button>
+          </div>
         </form>
       </div>
     </div>

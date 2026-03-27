@@ -24,7 +24,7 @@ export const generateCatalogPDF = (products, categoryTitle = 'Todos los Producto
     doc.setFontSize(9);
     doc.setTextColor(100, 100, 100);
     doc.setFont('helvetica', 'normal');
-    const contactInfo = `Cel: ${settings.phone || settings.whatsapp || '-'} | Ubicación: Zona Villa Dolores, Plaza Juana Azurduy`;
+    const contactInfo = `WhatsApp: ${settings.whatsapp || '-'} | Ubicación: Zona Villa Dolores, Plaza Juana Azurduy`;
     doc.text(contactInfo, 105, 21, { align: 'center' });
     
     doc.setFontSize(11);
