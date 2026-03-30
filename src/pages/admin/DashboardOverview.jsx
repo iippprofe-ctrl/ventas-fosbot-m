@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { getSales, getProducts, getSettings, saveSettings, clearSales } from '../../utils/store';
-import { TrendingUp, Package, Users, ShoppingCart, Settings, RefreshCcw, Smartphone, MapPin, Phone, Hash } from 'lucide-react';
+import { getSales, getProducts, getSettings, saveSettings, clearSales, renameCategoryInProducts } from '../../utils/store';
+import { TrendingUp, Package, Users, ShoppingCart, Settings, RefreshCcw, Smartphone, MapPin, Phone, Hash, Edit } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 export default function DashboardOverview() {
@@ -56,9 +56,32 @@ export default function DashboardOverview() {
   };
 
   const handleRemoveCategory = (cat) => {
-    const updated = categoryList.filter(c => c !== cat);
-    setCategoryList(updated);
-    syncSettings({ categories: updated });
+    if (window.confirm(`¿Seguro que desea eliminar la categoría "${cat}"?`)) {
+      const updated = categoryList.filter(c => c !== cat);
+      setCategoryList(updated);
+      syncSettings({ categories: updated });
+    }
+  };
+
+  const handleEditCategory = (oldName) => {
+    const newName = prompt(`Editar nombre de la categoría "${oldName}":`, oldName);
+    if (newName && newName.trim() !== "" && newName !== oldName) {
+      // 1. Verificar si el nombre ya existe
+      if (categoryList.includes(newName)) {
+        alert("Ese nombre de categoría ya existe.");
+        return;
+      }
+      
+      // 2. Actualizar lista de categorías
+      const updated = categoryList.map(c => c === oldName ? newName : c);
+      setCategoryList(updated);
+      syncSettings({ categories: updated });
+
+      // 3. Renombrar en productos
+      renameCategoryInProducts(oldName, newName);
+      
+      alert(`Categoría cambiada a "${newName}". Los productos han sido actualizados.`);
+    }
   };
 
   const handleAddProvider = () => {
@@ -179,8 +202,12 @@ export default function DashboardOverview() {
                   </div>
                   <div className="d-flex gap-2 flex-wrap mt-3">
                     {categoryList.map(c => (
-                      <span key={c} className="badge badge-green d-flex align-center gap-2" style={{ fontSize: '0.7rem' }}>
-                        {c} <RefreshCcw size={10} style={{ cursor: 'pointer' }} onClick={() => handleRemoveCategory(c)} />
+                      <span key={c} className="badge badge-green d-flex align-center gap-2" style={{ fontSize: '0.7rem', padding: '0.3rem 0.6rem' }}>
+                        {c} 
+                        <div className="d-flex align-center gap-1 ml-1" style={{ borderLeft: '1px solid rgba(255,255,255,0.1)', paddingLeft: '0.4rem' }}>
+                          <Edit size={11} style={{ cursor: 'pointer' }} className="text-primary" onClick={() => handleEditCategory(c)} />
+                          <RefreshCcw size={11} style={{ cursor: 'pointer' }} className="text-danger" onClick={() => handleRemoveCategory(c)} />
+                        </div>
                       </span>
                     ))}
                   </div>

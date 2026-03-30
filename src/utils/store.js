@@ -184,6 +184,17 @@ export const deleteProduct = (id) => {
   syncToCloud('productos', products);
 };
 
+export const renameCategoryInProducts = (oldName, newName) => {
+  const products = getProducts().map(p => {
+    if (p.category === oldName) {
+      return { ...p, category: newName };
+    }
+    return p;
+  });
+  localStorage.setItem('fisbot_products', JSON.stringify(products));
+  syncToCloud('productos', products);
+};
+
 export const saveSaleAndDeductStock = (saleObj) => {
   const products = getProducts();
   saleObj.items.forEach(cartItem => {
