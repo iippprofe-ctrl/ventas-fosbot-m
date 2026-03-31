@@ -1,10 +1,12 @@
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, Check } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function ProductCard({ product }) {
-  const { addToCart } = useCart();
+  const { addToCart, cart } = useCart();
   const { user } = useAuth();
+  
+  const isInCart = cart.some(item => item.id === product.id);
   
   return (
     <div className="glass-card d-flex flex-col" style={{ height: '100%', padding: '1rem' }}>
@@ -28,12 +30,14 @@ export default function ProductCard({ product }) {
           </div>
           {(!user || user.role === 'buyer') && (
             <button 
-              className="btn btn-primary" 
+              className={`btn ${isInCart ? 'btn-success' : 'btn-primary'}`} 
               onClick={() => addToCart(product)}
               disabled={product.stock <= 0}
               style={{ padding: '0.4rem 0.8rem' }}
             >
-              {product.stock > 0 ? <ShoppingCart size={16} /> : 'Agotado'}
+              {product.stock > 0 ? (
+                isInCart ? <Check size={16} /> : <ShoppingCart size={16} />
+              ) : 'Agotado'}
             </button>
           )}
         </div>

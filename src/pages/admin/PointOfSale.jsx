@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { getProducts, saveSaleAndDeductStock } from '../../utils/store';
 import { useAuth } from '../../contexts/AuthContext';
 import { generateReceiptPDF } from '../../utils/receiptGenerator';
-import { Plus, Minus, Trash2, Printer, Download, Receipt, ShoppingCart, Search } from 'lucide-react';
+import { Plus, Minus, Trash2, Printer, Download, Receipt, ShoppingCart, Search, Check } from 'lucide-react';
 
 export default function PointOfSale() {
   const [products, setProducts] = useState([]);
@@ -146,12 +146,12 @@ export default function PointOfSale() {
                 <div className="d-flex justify-between align-center">
                   <span className="text-primary font-bold text-sm">Bs. {(Number(p.price) || 0).toFixed(2)}</span>
                   <button 
-                    className="btn btn-secondary"
+                    className={`btn ${cart.some(item => item.id === p.id) ? 'btn-success' : 'btn-secondary'}`}
                     style={{ padding: '0.4rem', borderRadius: '50%' }}
                     onClick={() => addToCart(p)}
                     disabled={p.stock <= 0}
                   >
-                    <Plus size={16} />
+                    {cart.some(item => item.id === p.id) ? <Check size={16} /> : <Plus size={16} />}
                   </button>
                 </div>
               </div>
@@ -163,7 +163,7 @@ export default function PointOfSale() {
 
       {/* Cart & Checkout */}
       <div className="glass-panel d-flex flex-col pos-cart">
-        <h3 className="font-bold text-lg mb-4 text-secondary d-flex align-center gap-2">
+        <h3 className={`font-bold text-lg mb-4 ${cart.length > 0 ? 'text-success' : 'text-secondary'} d-flex align-center gap-2`}>
           <ShoppingCart size={20} /> VENTA ACTUAL
         </h3>
 

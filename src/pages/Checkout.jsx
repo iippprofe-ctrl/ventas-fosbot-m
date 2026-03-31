@@ -46,7 +46,9 @@ export default function Checkout() {
   return (
     <div className="animate-fade-in grid grid-cols-1 md:grid-cols-2 gap-6">
       <div className="glass-panel" style={{ padding: '2rem' }}>
-        <h2 className="text-2xl mb-6 font-bold text-primary">Resumen del Carrito</h2>
+        <h2 className="text-2xl mb-6 font-bold text-primary d-flex align-center gap-2">
+          <ShoppingBag size={24} className="text-success" /> Resumen del Carrito
+        </h2>
         
         <div className="d-flex flex-col gap-4">
           {cart.map(item => (

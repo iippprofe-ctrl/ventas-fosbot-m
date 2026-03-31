@@ -44,7 +44,7 @@ export default function Navbar() {
         </Link>
         
         {!user || user.role === 'buyer' ? (
-          <Link to="/checkout" className="btn btn-secondary p-2 position-relative">
+          <Link to="/checkout" className={`btn ${cartItemCount > 0 ? 'btn-success' : 'btn-secondary'} p-2 position-relative`}>
             <ShoppingCart size={18} />
             {cartItemCount > 0 && <span className="badge badge-blue" style={{ position: 'absolute', top: '-5px', right: '-5px', fontSize: '0.6rem', padding: '2px 4px' }}>{cartItemCount}</span>}
           </Link>
