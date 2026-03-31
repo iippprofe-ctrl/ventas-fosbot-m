@@ -3,7 +3,7 @@ import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function ProductCard({ product }) {
-  const { addToCart, cart } = useCart();
+  const { addToCart, removeFromCart, cart } = useCart();
   const { user } = useAuth();
   
   const isInCart = cart.some(item => item.id === product.id);
@@ -31,7 +31,7 @@ export default function ProductCard({ product }) {
           {(!user || user.role === 'buyer') && (
             <button 
               className={`btn ${isInCart ? 'btn-success' : 'btn-primary'}`} 
-              onClick={() => addToCart(product)}
+              onClick={() => isInCart ? removeFromCart(product.id) : addToCart(product)}
               disabled={product.stock <= 0}
               style={{ padding: '0.4rem 0.8rem' }}
             >
