@@ -148,14 +148,7 @@ export default function PointOfSale() {
                   <button 
                     className={`btn ${cart.some(item => item.id === p.id) ? 'btn-success' : 'btn-secondary'}`}
                     style={{ padding: '0.4rem', borderRadius: '50%' }}
-                    onClick={() => {
-                        const inCart = cart.find(item => item.id === p.id);
-                        if (inCart) {
-                            updateQuantity(p.id, 0); // Toggle off (remove)
-                        } else {
-                            addToCart(p); // Toggle on (add)
-                        }
-                    }}
+                    onClick={() => addToCart(p)}
                     disabled={p.stock <= 0}
                   >
                     {cart.some(item => item.id === p.id) ? <Check size={16} /> : <Plus size={16} />}
